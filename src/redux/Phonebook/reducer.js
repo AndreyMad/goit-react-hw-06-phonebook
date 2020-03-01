@@ -1,7 +1,13 @@
 import { combineReducers } from "redux";
 import types from "./types";
 
-const contactsReducer = (state = [], action) => {
+const contactsReducer = (
+  state = [
+    { id: "id-1", name: "Rosie Simpson", number: "459-12-56" },
+    { id: "id-2", name: "Rosise Simpsson", number: "459-12-56" }
+  ],
+  action
+) => {
   switch (action.type) {
     case types.ADD_CONTACT:
       return [...state, action.payload.contact];

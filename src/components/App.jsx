@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import keyGenerator from "uuid/v1";
 import { CSSTransition } from "react-transition-group";
-
+import { connect } from "react-redux";
 import Phonebook from "./Phonebook/Phonebook.jsx";
 import Contacts from "./Contacts/Contacts.jsx";
 import Filter from "./Filter/Filter.jsx";
@@ -10,15 +10,11 @@ import style from "./App.module.css";
 import pop from "../transitions/pop.module.css";
 import fade from "../transitions/fade.module.css";
 import WarningModal from "./WarningModal/WarningModal";
+import * as selector from "../redux/Phonebook/selectors";
 
 class App extends Component {
   state = {
-    contacts: [
-      { id: "id-1", name: "Rosie Simpson", number: "459-12-56" },
-      { id: "id-2", name: "Hermione Kline", number: "443-89-12" },
-      { id: "id-3", name: "Eden Clements", number: "645-17-79" },
-      { id: "id-4", name: "Annie Copeland", number: "227-91-26" }
-    ],
+    contacts: [],
     alert: false,
     notification: "",
     filter: ""
@@ -33,6 +29,7 @@ class App extends Component {
     } catch (err) {
       throw new Error(err);
     }
+    console.log(this.props);
   };
 
   componentDidUpdate = (prevProps, prevState) => {
@@ -102,7 +99,8 @@ class App extends Component {
   };
 
   render() {
-    const { contacts, filter, alert, notification } = this.state;
+    const { filter, alert, notification } = this.state;
+    const { contacts } = this.props;
     const filteredValue = this.searchFunc(contacts, filter);
     return (
       <>
@@ -139,5 +137,8 @@ class App extends Component {
     );
   }
 }
+const mapStateToProps = store => ({
+  contacts: selector.getContacts(store)
+});
 
-export default App;
+export default connect(mapStateToProps)(App);
